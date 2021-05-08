@@ -1,14 +1,17 @@
 package com.yoyo.tugas6.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yoyo.tugas6.R;
+import com.yoyo.tugas6.misc.Genre;
 import com.yoyo.tugas6.movie.NowPlayingResult;
 import com.yoyo.tugas6.movie.recyclerView.NowPlayingAdapter;
 import com.yoyo.tugas6.tv.TVShowDetail;
@@ -25,7 +28,7 @@ import retrofit2.Response;
 
 public class TVDetailActivity extends AppCompatActivity {
     ImageView ivBackdrop, ivPoster;
-    TextView tvTitle, tvNumOfEpisodes;
+    TextView tvTitle, tvNumOfEpisodes, tvGenres, tvOverview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,10 @@ public class TVDetailActivity extends AppCompatActivity {
         ivBackdrop = findViewById(R.id.iv_backdrop);
         ivPoster = findViewById(R.id.iv_poster);
         tvTitle = findViewById(R.id.tv_title);
-        tvNumOfEpisodes = findViewById(R.id.tv_number_of_episodes);
+        tvNumOfEpisodes = findViewById(R.id.tv_episodes_seasons);
+        tvGenres = findViewById(R.id.tv_genres);
+        tvOverview = findViewById(R.id.tv_overview);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -60,15 +66,22 @@ public class TVDetailActivity extends AppCompatActivity {
                 if(response.isSuccessful() && response.body() != null) {
                     TVShowDetail tvShowDetail = response.body();
                     tvTitle.setText(tvShowDetail.getTitle());
-                    tvNumOfEpisodes.setText(tvShowDetail.getEpisodes());
+                    String episodesNSeasons = tvShowDetail.getEpisodes() + " Episodes"
+                            + " | "
+                            + tvShowDetail.getSeasons() + " Seasons";
+                    String genres = "";
+                    for(Genre genre : tvShowDetail.getGenres()) {
+                        genres += genre.getName() + ", ";
+                    }
+
+                    tvOverview.setText(tvShowDetail.getOverview());
+                    tvNumOfEpisodes.setText(episodesNSeasons);
+                    tvGenres.setText(genres);
                     String uri = Consts.IMAGEBASEURL + tvShowDetail.getBackdropImage();
                     String uri2 = Consts.IMAGEBASEURL + tvShowDetail.getPosterImage();
                     Glide.with(TVDetailActivity.this).load(uri).into(ivBackdrop);
                     Glide.with(TVDetailActivity.this).load(uri2).into(ivPoster);
-//                    String uri = Consts.IMAGEBASEURL + nowPlaying.getPosterImage();
-//                    this.nowPlaying = nowPlaying;
-//                    tvTitle.setText(nowPlaying.getTitle());
-//                    Glide.with(this.itemView.getContext()).load(uri).into(ivPoster);
+                    Log.d("DEBUG GENRE", tvShowDetail.getGenres().get(0).getName());
                 }
                 else {
                     Log.d(Consts.APIERROR, "error");
@@ -82,5 +95,15 @@ public class TVDetailActivity extends AppCompatActivity {
 
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

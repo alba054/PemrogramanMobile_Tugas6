@@ -1,5 +1,6 @@
 package com.yoyo.tugas6.movie.recyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.yoyo.tugas6.R;
+import com.yoyo.tugas6.misc.OnItemClickListener;
 import com.yoyo.tugas6.movie.NowPlaying;
 import com.yoyo.tugas6.utils.Consts;
 
@@ -20,6 +22,11 @@ public class NowPlayingAdapter extends
         RecyclerView.Adapter<NowPlayingAdapter.ViewHolder> {
 
     private List<NowPlaying> nowPlayingList;
+    private OnItemClickListener<Integer> clickListener;
+
+    public void setClickListener(OnItemClickListener<Integer> clickListener) {
+        this.clickListener = clickListener;
+    }
 
 
     public void setNowPlayingList(List<NowPlaying> nowPlayingList) {
@@ -46,13 +53,15 @@ public class NowPlayingAdapter extends
         return nowPlayingList.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         NowPlaying nowPlaying;
         TextView tvTitle;
         ImageView ivPoster;
+        Integer movieId;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             tvTitle = itemView.findViewById(R.id.tv_title);
             ivPoster = itemView.findViewById(R.id.iv_poster);
         }
@@ -60,8 +69,15 @@ public class NowPlayingAdapter extends
         public void onBind(NowPlaying nowPlaying) {
             String uri = Consts.IMAGEBASEURL + nowPlaying.getPosterImage();
             this.nowPlaying = nowPlaying;
+            movieId = nowPlaying.getId();
             tvTitle.setText(nowPlaying.getTitle());
             Glide.with(this.itemView.getContext()).load(uri).into(ivPoster);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Log.d("DEBUG", movieId.toString());
+            clickListener.onClick(movieId);
         }
     }
 }

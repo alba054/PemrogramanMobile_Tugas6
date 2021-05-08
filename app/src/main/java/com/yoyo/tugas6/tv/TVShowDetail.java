@@ -24,6 +24,10 @@ public class TVShowDetail {
     @SerializedName("poster_path")
     private String posterImage;
 
+    public String getSeasons() {
+        return seasons;
+    }
+
     @SerializedName("genres")
     private List<Genre> genres;
 
@@ -33,24 +37,8 @@ public class TVShowDetail {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getEpisodes() {
         return episodes;
-    }
-
-    public void setEpisodes(String episodes) {
-        this.episodes = episodes;
-    }
-
-    public String getSeasons() {
-        return seasons;
-    }
-
-    public void setSeasons(String seasons) {
-        this.seasons = seasons;
     }
 
     public int getId() {
@@ -65,31 +53,17 @@ public class TVShowDetail {
         return backdropImage;
     }
 
-    public void setBackdropImage(String backdropImage) {
-        this.backdropImage = backdropImage;
-    }
 
     public String getPosterImage() {
         return posterImage;
-    }
-
-    public void setPosterImage(String posterImage) {
-        this.posterImage = posterImage;
     }
 
     public List<Genre> getGenres() {
         return genres;
     }
 
-    public void setGenres(List<Genre> genres) {
-        this.genres = genres;
-    }
-
     public String getOverview() {
         return overview;
     }
 
-    public void setOverview(String overview) {
-        this.overview = overview;
-    }
 }

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yoyo.tugas6.R;
+import com.yoyo.tugas6.activities.MovieActivity;
 import com.yoyo.tugas6.misc.OnItemClickListener;
 import com.yoyo.tugas6.movie.recyclerView.NowPlayingAdapter;
 import com.yoyo.tugas6.utils.Consts;
@@ -26,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NowPlayingFragment extends Fragment {
+public class NowPlayingFragment extends Fragment implements OnItemClickListener<Integer> {
     private RecyclerView rcNowPlaying;
     private NowPlayingAdapter nowPlayingAdapter;
 //    private Database nowPlayingDatabase;
@@ -56,6 +57,8 @@ public class NowPlayingFragment extends Fragment {
         rcNowPlaying = view.findViewById(R.id.rc_now_playing);
         rcNowPlaying.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         rcNowPlaying.setHasFixedSize(true);
+        nowPlayingAdapter = new NowPlayingAdapter();
+        nowPlayingAdapter.setClickListener(this);
 //        nowPlayingDatabase = new Database();
 //        nowPlayingAdapter = new NowPlayingAdapter();
 //        nowPlayingAdapter.setNowPlayingList(nowPlayingDatabase.getNowPlayingList());
@@ -77,7 +80,7 @@ public class NowPlayingFragment extends Fragment {
             @Override
             public void onResponse(Call<NowPlayingResult> call, Response<NowPlayingResult> response) {
                 if(response.isSuccessful() && response.body().getNowPlayingList() != null) {
-                    nowPlayingAdapter = new NowPlayingAdapter();
+
                     nowPlayingAdapter.setNowPlayingList(response.body().getNowPlayingList());
                     rcNowPlaying.setAdapter(nowPlayingAdapter);
                 }
@@ -94,9 +97,13 @@ public class NowPlayingFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onClick(Integer id) {
+        Intent intent = new Intent(getActivity(), MovieActivity.class);
 
-//    @Override
-//    public void onClick(Integer integer) {
-//        Intent intent = new Intent(getActivity(), )
-//    }
+        if(id != null) {
+            intent.putExtra("MOVIE ID", id);
+            startActivity(intent);
+        }
+    }
 }
