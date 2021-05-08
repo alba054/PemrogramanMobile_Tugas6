@@ -1,4 +1,4 @@
-package com.yoyo.tugas6;
+package com.yoyo.tugas6.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.yoyo.tugas6.FavoriteFragment;
+import com.yoyo.tugas6.R;
 import com.yoyo.tugas6.movie.NowPlayingFragment;
 import com.yoyo.tugas6.tv.TVFragment;
 

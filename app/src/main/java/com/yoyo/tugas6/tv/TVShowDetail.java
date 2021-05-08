@@ -1,7 +1,7 @@
 package com.yoyo.tugas6.tv;
 
 import com.google.gson.annotations.SerializedName;
-import com.yoyo.tugas6.helper.Genre;
+import com.yoyo.tugas6.misc.Genre;
 
 import java.util.List;
 

@@ -1,5 +1,6 @@
 package com.yoyo.tugas6.movie;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yoyo.tugas6.R;
+import com.yoyo.tugas6.misc.OnItemClickListener;
 import com.yoyo.tugas6.movie.recyclerView.NowPlayingAdapter;
 import com.yoyo.tugas6.utils.Consts;
 import com.yoyo.tugas6.utils.MovieService;
@@ -90,8 +92,11 @@ public class NowPlayingFragment extends Fragment {
             }
 
         });
-
     }
 
 
+//    @Override
+//    public void onClick(Integer integer) {
+//        Intent intent = new Intent(getActivity(), )
+//    }
 }

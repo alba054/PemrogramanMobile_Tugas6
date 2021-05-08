@@ -9,25 +9,17 @@ public class TVShow {
     @SerializedName("original_name")
     private String name;
 
-    int id;
+    private Integer id;
 
     public String getPosterImage() {
         return posterImage;
-    }
-
-    public void setPosterImage(String posterImage) {
-        this.posterImage = posterImage;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

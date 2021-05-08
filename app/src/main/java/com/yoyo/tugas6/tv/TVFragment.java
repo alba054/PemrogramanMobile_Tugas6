@@ -1,5 +1,6 @@
 package com.yoyo.tugas6.tv;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yoyo.tugas6.R;
+import com.yoyo.tugas6.activities.TVDetailActivity;
+import com.yoyo.tugas6.misc.OnItemClickListener;
 import com.yoyo.tugas6.tv.recyclerView.TVShowAdapter;
 import com.yoyo.tugas6.utils.Consts;
 import com.yoyo.tugas6.utils.MovieService;
@@ -24,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TVFragment extends Fragment {
+public class TVFragment extends Fragment implements OnItemClickListener<Integer> {
     private RecyclerView rcTvShow;
     private TVShowAdapter tvShowAdapter;
 //    private Database nowPlayingDatabase;
@@ -54,6 +57,8 @@ public class TVFragment extends Fragment {
         rcTvShow = view.findViewById(R.id.rc_tv);
         rcTvShow.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         rcTvShow.setHasFixedSize(true);
+        tvShowAdapter = new TVShowAdapter();
+        tvShowAdapter.setClickListener(this);
 //        nowPlayingDatabase = new Database();
 //        nowPlayingAdapter = new NowPlayingAdapter();
 //        nowPlayingAdapter.setNowPlayingList(nowPlayingDatabase.getNowPlayingList());
@@ -75,7 +80,6 @@ public class TVFragment extends Fragment {
             @Override
             public void onResponse(Call<TVResult> call, Response<TVResult> response) {
                 if(response.isSuccessful() && response.body().getTvShowList() != null) {
-                    tvShowAdapter = new TVShowAdapter();
                     tvShowAdapter.setTvShowList(response.body().getTvShowList());
                     rcTvShow.setAdapter(tvShowAdapter);
                 }
@@ -94,4 +98,13 @@ public class TVFragment extends Fragment {
     }
 
 
+    @Override
+    public void onClick(Integer id) {
+        Intent intent = new Intent(getActivity(), TVDetailActivity.class);
+
+        if(id != null) {
+            intent.putExtra("TV ID", id);
+            startActivity(intent);
+        }
+    }
 }

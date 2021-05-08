@@ -1,5 +1,6 @@
 package com.yoyo.tugas6.tv.recyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +12,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.yoyo.tugas6.R;
+import com.yoyo.tugas6.misc.OnItemClickListener;
 import com.yoyo.tugas6.tv.TVShow;
 import com.yoyo.tugas6.utils.Consts;
 
 import java.util.List;
 
-public class TVShowAdapter extends
-        RecyclerView.Adapter<TVShowAdapter.ViewHolder> {
-
+public class TVShowAdapter extends RecyclerView.Adapter<TVShowAdapter.ViewHolder> {
     private List<TVShow> tvShowList;
+    private OnItemClickListener<Integer> clickListener;
+
+    public void setClickListener(OnItemClickListener<Integer> clickListener) {
+        this.clickListener = clickListener;
+    }
 
     public void setTvShowList(List<TVShow> tvShowList) {
         this.tvShowList = tvShowList;
@@ -45,13 +50,15 @@ public class TVShowAdapter extends
         return tvShowList.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TVShow tvShow;
         TextView tvTitle;
         ImageView ivPoster;
+        Integer tvId;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             tvTitle = itemView.findViewById(R.id.tv_title);
             ivPoster = itemView.findViewById(R.id.iv_poster);
         }
@@ -59,8 +66,15 @@ public class TVShowAdapter extends
         public void onBind(TVShow tvShow) {
             String uri = Consts.IMAGEBASEURL + tvShow.getPosterImage();
             this.tvShow = tvShow;
+            tvId = tvShow.getId();
             tvTitle.setText(tvShow.getName());
             Glide.with(this.itemView.getContext()).load(uri).into(ivPoster);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Log.d("DEBUG", tvId.toString());
+            clickListener.onClick(tvId);
         }
     }
 }
